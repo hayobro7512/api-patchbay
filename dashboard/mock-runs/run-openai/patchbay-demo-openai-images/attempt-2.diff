@@ -1,0 +1,14 @@
+diff --git a/images.js b/images.js
+--- a/images.js
++++ b/images.js
+@@ -9,8 +9,8 @@ async function call(method, path, body) {
+   return res.json();
+ }
+ 
+-// Returns the base64 image for a prompt. `user` identifies the end user for abuse monitoring.
++// Returns the base64 image for a prompt. `user` is sent as the safety identifier for abuse monitoring.
+ export async function generateImage(prompt, size, user) {
+-  const r = await call('POST', '/images/generations', { prompt, size, user });
++  const r = await call('POST', '/images/generations', { prompt, size, model: 'dall-e-3', safety_identifier: user });
+   return r.data[0].b64_json;
+ }

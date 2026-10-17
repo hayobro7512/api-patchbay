@@ -1,8 +1,8 @@
 # API Patchbay: 90-second video script and run sheet
 
-The judges see only this video, not a live demo. The real OpenAI change is the main story. The simulated Acme Pay demo is not in the video; mention it only in the written project description.
+The judges see only this video, not a live demo. **This is version A: the real OpenAI change.** If the real run fails for any reason, record `VIDEO_SCRIPT_SIMULATED.md` (version B, the Acme Pay fallback) instead. Both fit 90 seconds, so there is no need for extra time. Record the real one first.
 
-Slot: 90 seconds. Deck: `patchbay.pptx` (4 slides, dark theme) in this folder. Slide 3 carries the one-sentence difference; slide 4 is the close.
+Slot: 90 seconds. Deck: `patchbay.pptx` (4 slides, dark theme) in this folder (version B uses `patchbay-simulated.pptx`). Slide 3 carries the one-sentence difference; slide 4 is the close.
 
 Who uses it, in the words to use everywhere: the **API provider** publishes the change; a **developer team** (the engineers at a company that integrates that API) reviews and merges the pull request, or lets auto-merge handle small passing changes. Say "developer team", never "customer" or "users".
 
@@ -29,10 +29,10 @@ OpenAI's public spec (openai/openai-openapi, commits 5162af98 of 2026-05-13 to f
 |---|---|---|---|
 | 0:00–0:04 | Slide 1 | "This is API Patchbay." | Start recording. Advance after 3 seconds. |
 | 0:04–0:18 | Slide 2 (problem) | "A founder who worked at AWS says over 30% of their downtime came from API changes nobody noticed. Nobody reads changelogs, and fixing it meant every developer team editing their own code." | Advance to the dashboard on the last word. |
-| 0:18–0:30 | Dashboard, top and change feed | "Here is a real change. OpenAI's API now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read." | In Terminal press Enter. The feed fills with the 2 changes. |
-| 0:30–0:58 | Dashboard, repo card | "An agent finds the code in our example repo, writes the fix, and tests it in a clean Freestyle VM. If a test fails, it retries from a snapshot." | Watch locate, patch, verify, pass. Do not click. If it takes longer than 28 seconds, speed this clip up 2x in the editor and add a small "2x" caption. |
-| 0:58–1:12 | PR tab | "The developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes." | Click "Open pull request". Scroll once to the change table, then to the "Verified in a clean Freestyle VM" line. |
-| 1:12–1:30 | Slide 3, then slide 4 | The one sentence above, then: "The provider ships once. Every developer team gets a tested PR." | Show slide 3 for the sentence, switch to slide 4 for the last line. Stop recording. |
+| 0:18–0:30 | Dashboard, top banner (green "REAL SPEC CHANGE", the chips 1 breaking and 1 deprecated) and the change feed | "Here is a real change. OpenAI's API now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read." | In Terminal press Enter. The banner and the 2 changes appear within a few seconds. |
+| 0:30–0:58 | Dashboard, repo card `patchbay-demo-openai-images` (pipeline Locate, Patch, Verify in VM, PR; "Tested in a clean Freestyle VM" badge) | "An agent finds the code in our example repo, writes the fix, and tests it in a clean Freestyle VM. If a test fails, it retries from a snapshot." | Watch the pipeline turn green. The real run takes 20 to 35 seconds. Do not click. If it takes longer than 28 seconds, speed this clip up 2x in the editor and add a small "2x" caption. |
+| 0:58–1:12 | PR tab | "The developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes." | Click "Open pull request" on the dashboard card (the Merge button is for developer teams; do not click it). Scroll once to the change table, then to the "Verified in a clean Freestyle VM" line. |
+| 1:12–1:30 | Slide 3, then slide 4 | The one sentence above, then: "The provider ships once. Every developer team gets a tested PR." | The dashboard also shows the same sentence in an amber banner, so you can scroll to it instead of using slide 3. Show it for the sentence, then slide 4 for the last line. Stop recording. |
 
 Optional 8-second clip, only if the cut is under 90 seconds: an outside agent (Claude Code) fixing a repo it has never seen from the feed alone (`sh scripts/outside-agent/run.sh`, then speed it up). Say: "Any coding agent can use the same feed." It uses the simulated Acme Pay feed, so label it "separate demo".
 

@@ -1,0 +1,9 @@
+diff --git a/images.js b/images.js
+--- a/images.js
++++ b/images.js
+@@ -12,5 +12,5 @@ async function call(method, path, body) {
+ export async function generateImage(prompt, size, user) {
+-  const r = await call('POST', '/images/generations', { prompt, size, user });
++  const r = await call('POST', '/images/generations', { prompt, size, safety_identifier: user });
+   return r.data[0].b64_json;
+ }

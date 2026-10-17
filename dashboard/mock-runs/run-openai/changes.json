@@ -1,0 +1,32 @@
+{
+  "provider": "openai",
+  "from_version": "2026-05-13",
+  "to_version": "2026-10-15",
+  "spec_url": "https://raw.githubusercontent.com/openai/openai-openapi/f601a440c21397028cad2218eca1afd701bf12ec/openapi.yaml",
+  "generated_at": "2026-10-17T15:00:30Z",
+  "changes": [
+    {
+      "id": "chg_001",
+      "kind": "breaking",
+      "method": "POST",
+      "path": "/images/generations",
+      "location": "request_param",
+      "name": "model",
+      "summary": "Request parameter model became required on POST /images/generations.",
+      "after": "model",
+      "migration_hint": "Always send 'model' in POST /images/generations requests; pick the value explicitly, do not rely on a server default."
+    },
+    {
+      "id": "chg_002",
+      "kind": "deprecated",
+      "method": "POST",
+      "path": "/images/generations",
+      "location": "request_param",
+      "name": "user",
+      "summary": "Request parameter user is deprecated in favor of safety_identifier on POST /images/generations.",
+      "before": "user",
+      "after": "safety_identifier",
+      "migration_hint": "In every POST /images/generations request body, send 'safety_identifier' instead of 'user' (same value and type); 'user' still works for now but will be removed."
+    }
+  ]
+}

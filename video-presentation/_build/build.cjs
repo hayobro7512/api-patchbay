@@ -1,4 +1,4 @@
-// Builds ../patchbay.pptx. Run: node build.cjs   (ONLY=n previews slide n as prev<n>.pptx)
+// Builds ../patchbay.pptx (SIM=1 -> ../patchbay-simulated.pptx). Run: node build.cjs   (ONLY=n previews slide n as prev<n>.pptx)
 const pptxgen = require('pptxgenjs');
 const sharp = require('sharp');
 const React = require('react');
@@ -7,6 +7,7 @@ const fa = require('react-icons/fa');
 const path = require('path');
 const D = path.join(__dirname, '..') + '/';
 const ONLY = process.env.ONLY ? +process.env.ONLY : 0;
+const SIM = !!process.env.SIM; // SIM=1 builds the simulated-provider variant (Acme Pay) for the fallback video
 const K = { bg: '15171C', card: '1F222A', deep: '0F1115', line: '343843', text: 'F4F4F2', mute: 'A3A7B0', amber: 'F2A43A', green: '4CC38A', red: 'F47067' };
 const H = 'Cambria', B = 'Calibri', M = 'Courier New';
 
@@ -70,11 +71,11 @@ const icon = async (name, color = K.amber) => {
       if (i < 3) s.addShape(pres.shapes.LINE, { x: rx + 0.8, y: 1.75, w: 0.85, h: 0, line: { color: K.amber, width: 1.5, endArrowType: 'triangle' }, objectName: 'Arrow ' + (i + 1) });
     });
     card(s, 0.8, 3.3, 8.4, 1.75, 'Diff card', K.deep);
-    T(s, 'company-repo / images.js', { x: 1.05, y: 3.45, w: 4.5, h: 0.3, fontFace: M, fontSize: 12, color: K.mute, objectName: 'Diff file' });
+    T(s, SIM ? 'company-repo / acme.js' : 'company-repo / images.js', { x: 1.05, y: 3.45, w: 4.5, h: 0.3, fontFace: M, fontSize: 12, color: K.mute, objectName: 'Diff file' });
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 7.35, y: 3.43, w: 1.65, h: 0.32, rectRadius: 0.16, fill: { color: K.deep }, line: { color: K.green, width: 1.25 }, objectName: 'Pass badge' });
     T(s, 'tests passed', { x: 7.35, y: 3.43, w: 1.65, h: 0.32, align: 'center', valign: 'middle', fontFace: B, fontSize: 12, bold: true, color: K.green, objectName: 'Pass badge text' });
-    T(s, '- body: { prompt, size, user }', { x: 1.05, y: 3.9, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.red, valign: 'middle', objectName: 'Diff removed' });
-    T(s, '+ body: { prompt, size, model, safety_identifier }', { x: 1.05, y: 4.4, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.green, valign: 'middle', objectName: 'Diff added' });
+    T(s, SIM ? '- body: { amount_cents: amount }' : '- body: { prompt, size, user }', { x: 1.05, y: 3.9, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.red, valign: 'middle', objectName: 'Diff removed' });
+    T(s, SIM ? '+ body: { amount_minor: amount }' : '+ body: { prompt, size, model, safety_identifier }', { x: 1.05, y: 4.4, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.green, valign: 'middle', objectName: 'Diff added' });
     T(s, "Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a PR that is already fixed and tested in a clean VM.", { x: 0.8, y: 5.1, w: 8.4, h: 0.42, fontFace: B, fontSize: 11, italic: true, color: K.amber, valign: 'top', objectName: 'Differentiator' });
     s.addNotes('Optional. Real OpenAI change: model became required, user deprecated for safety_identifier.');
   });
@@ -95,5 +96,5 @@ const icon = async (name, color = K.amber) => {
   });
 
   (ONLY ? [slides[ONLY - 1]] : slides).forEach(f => f());
-  console.log(await pres.writeFile({ fileName: ONLY ? `prev${ONLY}.pptx` : D + 'patchbay.pptx' }));
+  console.log(await pres.writeFile({ fileName: ONLY ? `prev${ONLY}.pptx` : D + (SIM ? 'patchbay-simulated.pptx' : 'patchbay.pptx') }));
 })();

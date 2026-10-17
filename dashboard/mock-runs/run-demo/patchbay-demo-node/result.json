@@ -1,4 +1,4 @@
-{"run_id":"run-demo","provider":"acme-pay","repo":"patchbay-demo-node","status":"shipped","vm_id":"vm-7f3a91c2","sandbox":"freestyle","attempts":[
+{"run_id":"run-demo","provider":"acme-pay","repo":"hayobro7512/patchbay-demo-node","status":"shipped","vm_id":"vm-7f3a91c2","sandbox":"freestyle","attempts":[
 {"n":1,"model":"deepseek-v4.1-flash","tests":"fail","log_tail":"FAIL test/charges.test.js\n  x creates a charge (12 ms)\n    Expected: {\"value\":1999,\"currency\":\"usd\"}\n    Received: 1999\nTests: 1 failed, 4 passed"},
 {"n":2,"model":"glm-5.3-flash","tests":"pass","log_tail":"PASS test/charges.test.js\nPASS test/cards.test.js\nTests: 5 passed, 5 total"}],
-"pr_url":"https://github.com/patchbay-demo-node/pull/12","started_at":"2026-10-17T15:00:00Z","finished_at":"2026-10-17T15:01:12Z"}
+"pr_url":"https://github.com/hayobro7512/patchbay-demo-node/pull/12","started_at":"2026-10-17T15:00:00Z","finished_at":"2026-10-17T15:01:12Z"}

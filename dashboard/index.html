@@ -4,7 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API Patchbay</title>
+<meta name="description" content="API provider changes become tested pull requests for every developer team.">
+<link rel="alternate" type="application/json" href="/api/latest">
+<link rel="alternate" type="text/markdown" href="/agents.md">
 <link rel="stylesheet" href="styles.css">
+<!--STATE-->
 </head>
 <body>
 <header class="top">
@@ -13,12 +17,54 @@
 </header>
 <main>
   <div id="mock" class="mock" role="alert" hidden>MOCK DATA - not a real run</div>
-  <section id="head" class="head" aria-label="Provider change"></section>
-  <section id="repos" class="repos" aria-label="Repositories"></section>
-  <details id="feed" class="feed">
-    <summary>Change feed <span id="feed-count"></span></summary>
+
+  <section id="hero" class="hero" aria-label="What changed and what happened">
+    <div class="hero-top">
+      <span id="rs-label" class="rs"></span>
+      <label class="runsel" id="runsel-wrap" hidden>Run
+        <select id="runsel" aria-label="Choose a run"></select>
+      </label>
+    </div>
+    <div id="head" class="head"></div>
+    <p id="summary" class="summary" aria-live="polite"></p>
+  </section>
+
+  <p class="diff-line" id="differentiator">Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM.</p>
+
+  <h2 class="h2">Repos</h2>
+  <section id="repos" class="repos" aria-label="Repos being patched"></section>
+
+  <details id="feed" class="feed" open>
+    <summary>What the API provider changed <span id="feed-count"></span></summary>
     <ol id="feed-list"></ol>
   </details>
+
+  <div class="two">
+    <section id="for-teams" class="panel teams" aria-labelledby="h-teams">
+      <h2 id="h-teams">For developer teams</h2>
+      <p class="lead">Review the pull request on each repo card above, then merge. Tools for this run:</p>
+      <div class="btns">
+        <button type="button" class="btn" id="b-feed" data-action="copy-feed-url">Copy feed URL</button>
+        <button type="button" class="btn" id="b-snippet" data-action="copy-agents-snippet">Copy AGENTS.md snippet</button>
+        <button type="button" class="btn" id="b-rerun" data-action="copy-rerun-command">Copy re-run command</button>
+        <a class="btn" id="b-dl-changes" data-action="download-changes" href="/api/download?file=changes">Download changes.json</a>
+        <a class="btn" id="b-dl-result" data-action="download-result" href="/api/download?file=result">Download result.json</a>
+      </div>
+      <p class="hint2" id="rerun-preview"></p>
+    </section>
+    <section id="for-agents" class="panel agents" aria-labelledby="h-agents">
+      <h2 id="h-agents">For agents</h2>
+      <p class="lead">Read this state as JSON, no screen reading needed.</p>
+      <ul class="alinks">
+        <li><a href="/agents.md">/agents.md</a> <span>how to read status and next_actions</span></li>
+        <li><a href="/api/latest" id="a-latest">/api/latest</a> <span>newest run, stable JSON</span></li>
+        <li><a href="/api/results">/api/results</a> <span>all runs</span></li>
+        <li><code id="a-feed"></code> <span>provider change feed</span></li>
+      </ul>
+      <h3>next_actions</h3>
+      <ul id="actions" class="actions"></ul>
+    </section>
+  </div>
 </main>
 <script src="app.js"></script>
 </body>

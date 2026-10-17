@@ -1,0 +1,6 @@
+diff --git a/src/charges.js b/src/charges.js
+--- a/src/charges.js
++++ b/src/charges.js
+@@ -4,3 +4,3 @@
+-  return post('/v1/charges', { amount_cents: amount, currency });
++  return post('/v1/charges', { amount_minor: amount, currency });

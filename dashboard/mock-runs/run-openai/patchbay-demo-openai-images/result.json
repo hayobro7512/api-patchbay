@@ -1,0 +1,4 @@
+{"run_id":"run-openai","provider":"openai","repo":"hayobro7512/patchbay-demo-openai-images","status":"shipped","vm_id":"vm-dbec96a83dab","sandbox":"freestyle","attempts":[
+{"n":1,"model":"deepseek-v4.1-flash","tests":"fail","log_tail":"✖ generateImage returns base64 image\n  AssertionError: request body missing required field 'model'\n  expected: { model: 'dall-e-3', prompt: 'a cat' }\n  actual: { prompt: 'a cat' }\nℹ tests 2\nℹ pass 1\nℹ fail 1"},
+{"n":2,"model":"deepseek-v4.1-flash","tests":"pass","log_tail":"✔ generateImage returns base64 image (41.8ms)\n✔ generateImage without end-user id (5.1ms)\nℹ tests 2\nℹ pass 2\nℹ fail 0"}],
+"pr_url":"https://github.com/hayobro7512/patchbay-demo-openai-images/pull/5","started_at":"2026-10-17T15:00:30Z","finished_at":"2026-10-17T15:00:48Z","merged":false}

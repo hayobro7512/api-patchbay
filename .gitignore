@@ -1,3 +1,4 @@
+.DS_Store
 .env
 *.key
 demo-repos/go/
@@ -7,3 +8,4 @@ demo-repos/python/
 dist/
 node_modules/
 runs/
+video-presentation/patchbay.orig.pptx

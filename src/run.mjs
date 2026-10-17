@@ -66,7 +66,7 @@ async function repoFlow(lang) {
       feedback = `previous patch could not be produced or applied: ${(e.stderr || e.message).slice(-600)}`;
       continue;
     }
-    if (prevVm && o.sandbox === 'freestyle') await killVm(prevVm); // stay under the Free plan VM cap
+    if (prevVm && o.sandbox === 'freestyle') await killVm(prevVm); // free the old VM before the retry fork
     log(lang, `attempt ${n}: verifying in ${o.sandbox}`);
     const r = await verify({ repoDir, patchPath: patchFile, runId, provider, sandbox: o.sandbox, attempt: n, model, env: ['ACME_API_VERSION=v2'], changesPath, contract: o.contract && resolve(ROOT, o.new) });
     log(lang, `attempt ${n}: tests ${r.tests}${r.vm_id ? ` (vm ${r.vm_id})` : ''}`);

@@ -4,8 +4,6 @@ An API provider's spec change becomes one machine-readable change feed. Any codi
 
 Note: the example repos the pipeline patches (`patchbay-demo-*`) are private GitHub repos, so their PR links will not open for visitors; the video shows them.
 
-Built solo at c0mpiled-14 (UC Berkeley, 2026-10-17) for the YC Fall 2026 RFS "Self-Maintaining APIs", agent-first software track.
-
 ## Who it is for
 
 Businesses, not app users. The buyers are API providers (fewer support tickets, faster adoption of new features) and the integration or platform teams that maintain many third-party API integrations. The "customer" who reviews a PR is a developer on such a team, not an end user of the product built on the API.
@@ -57,10 +55,7 @@ dashboard/       status page that reads runs/<run>/<repo>/result.json
 schemas/         the three contracts between the pieces
 ```
 
-`PLAN.md` has the build plan; `PROJECT_DESCRIPTION.md` has the pitch material.
-
 ## Honest limits
 
 - Fake provider and small repos. Real migrations are harder, and patch quality depends on the model. In testing, DeepSeek V4.1 Flash passed 8 of 9 first-shot runs; the retry loop covers the rest.
 - Customers still review and merge every PR.
-- The Freestyle account is on the Free plan (5 VMs, 5 snapshots), so the run cleans up VMs after each pass.

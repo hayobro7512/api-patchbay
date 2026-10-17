@@ -53,7 +53,7 @@ function feed(c) {
   const list = (c && c.changes) || [];
   $('feed-count').textContent = list.length ? `(${list.length})` : '';
   $('feed-list').innerHTML = list.map(x => `<li><span class="kind ${esc(x.kind)}">${esc(x.kind)}</span>
-    <div class="ep"><b>${esc(x.method)}</b> ${esc(x.path)}${x.name ? ' &middot; ' + esc(x.name) : ''}</div>
+    <div class="ep"><b>${esc(x.method)}</b> ${esc(x.path)}${x.name && x.name !== x.path ? ' &middot; ' + esc(x.name) : ''}</div>
     <div class="sum">${esc(x.summary)}</div><div class="hint">${esc(x.migration_hint)}</div></li>`).join('');
 }
 function render(d) {

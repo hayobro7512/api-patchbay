@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Go speedup: run scripts/prebake-go.sh once; it stores FREESTYLE_GO_SNAPSHOT in .env and Go VMs boot from it (never deleted by cleanup).
 // Verify a patch in a sandbox (local temp dir or Freestyle VM) and update runs/<run>/<repo>/result.json.
 // Freestyle access goes through the freestyle CLI (zero deps); FREESTYLE_API_KEY is read from .env.
 import { spawn } from 'node:child_process';
@@ -85,7 +86,16 @@ async function freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt, sb,
     vm = v.id; t.fork_ms = d;
     sb.vms.push(vm); writeJson(sb.file, sb);
   } else {
-    const [v, d] = await ms(() => fsJson('vm', 'create', '--no-ssh', '--metadata', 'patchbay=' + sb.run));
+    const lang = langOf(repoDir);
+    // Go: boot from the prebaked snapshot (scripts/prebake-go.sh) if FREESTYLE_GO_SNAPSHOT is set.
+    // The base id is never put in sb.snapshots, so cleanup() can't delete it.
+    let baked = false, v, d;
+    const goSnap = lang === 'go' && process.env.FREESTYLE_GO_SNAPSHOT;
+    if (goSnap) {
+      try { [v, d] = await ms(() => fsJson('vm', 'create', '--no-ssh', '--snapshot-id', goSnap, '--metadata', 'patchbay=' + sb.run)); baked = true; }
+      catch (e) { console.error('go snapshot unavailable, installing Go in the VM instead'); }
+    }
+    if (!baked) [v, d] = await ms(() => fsJson('vm', 'create', '--no-ssh', '--metadata', 'patchbay=' + sb.run));
     vm = v.id; t.create_ms = d;
     sb.vms.push(vm); writeJson(sb.file, sb);
     const tmp = mkdtempSync(join(tmpdir(), 'patchbay-up-'));
@@ -98,9 +108,8 @@ async function freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt, sb,
     });
     t.upload_ms = up;
     rmSync(tmp, { recursive: true, force: true });
-    const lang = langOf(repoDir);
     const [r, inst] = await ms(async () => {
-      if (lang === 'go') {
+      if (lang === 'go' && !baked) {
         const g = await ex(vm, 'test -x /usr/local/go/bin/go || { curl -fsSL https://go.dev/dl/go1.24.4.linux-$(dpkg --print-architecture).tar.gz | tar -C /usr/local -xz; }', true);
         if (g.code) return g;
       }
@@ -176,7 +185,7 @@ export async function cleanup(runId, runsDir = join(ROOT, 'runs')) {
     const sb = readJson(f, null);
     if (!sb) continue;
     for (const v of sb.vms || []) console.log('delete vm', v, (await fs('vm', 'delete', v)).out.trim());
-    for (const s of sb.snapshots || []) console.log('delete snapshot', s, (await fs('snapshot', 'delete', s)).out.trim());
+    for (const s of (sb.snapshots || []).filter((x) => x !== process.env.FREESTYLE_GO_SNAPSHOT)) console.log('delete snapshot', s, (await fs('snapshot', 'delete', s)).out.trim());
     sb.vms = []; sb.snapshots = []; sb.snapshot_id = null; writeJson(f, sb);
   }
 }

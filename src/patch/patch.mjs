@@ -30,15 +30,26 @@ function endpoint() {
   }
   return { base: base.replace(/\/$/, ''), key, model: process.env.PATCH_MODEL || 'deepseek-v4.1-flash' };
 }
-async function chat(messages) {
-  const { base, key, model } = endpoint();
-  const res = await fetch(base + '/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key },
+async function call(model, messages, ms) {
+  const { base, key } = endpoint();
+  const res = await fetch(base + '/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key }, signal: AbortSignal.timeout(ms),
     body: JSON.stringify({ model, messages, temperature: 0.2, max_tokens: 4000 }) });
   const txt = await res.text();
   if (!res.ok) throw new Error(`model http ${res.status}: ${txt.slice(0, 200).replaceAll(key, '<key>')}`);
   const j = JSON.parse(txt);
   console.error(`model=${model} prompt_tokens=${j.usage?.prompt_tokens} completion_tokens=${j.usage?.completion_tokens}`);
   return j.choices[0].message.content;
+}
+// Hosted models can stall under load (one run waited 3 minutes). Hedge: if the primary has not answered after PATCH_HEDGE_MS,
+// send a second request (same model by default, or PATCH_FALLBACK) and take whichever answers first. Each call is cut off after PATCH_TIMEOUT_MS.
+async function chat(messages) {
+  const primary = endpoint().model;
+  const fallbacks = (process.env.PATCH_FALLBACK ?? primary).split(',').map((m) => m.trim()).filter(Boolean); // default: a second identical request (glm-5.3-flash measured slower, 43 s vs 9 s)
+  const ms = +process.env.PATCH_TIMEOUT_MS || 60000, hedge = +process.env.PATCH_HEDGE_MS || 15000;
+  let timer;
+  const tries = [call(primary, messages, ms)];
+  if (fallbacks[0]) tries.push(new Promise((res, rej) => { timer = setTimeout(() => call(fallbacks[0], messages, ms).then(res, rej), hedge); }));
+  try { return await Promise.any(tries); } finally { clearTimeout(timer); }
 }
 
 // ---- locate

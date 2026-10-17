@@ -1,6 +1,6 @@
 # API Patchbay: 90-second video script and run sheet
 
-The judges see only this video, not a live demo. **This is version A: the real OpenAI change.** If the real run fails for any reason, record `VIDEO_SCRIPT_SIMULATED.md` (version B, the Acme Pay fallback) instead. Both fit 90 seconds, so there is no need for extra time. Record the real one first.
+The judges see only this video, not a live demo. **This is version A: the real OpenAI change.** If the real run fails for any reason, record `VIDEO_SCRIPT_B_FALLBACK_SIMULATED.md` (version B, the Acme Pay fallback) instead. Both fit 90 seconds, so there is no need for extra time. Record the real one first.
 
 Slot: 90 seconds. Deck: `patchbay.pptx` (4 slides, dark theme) in this folder (version B uses `patchbay-simulated.pptx`). Slide 3 carries the one-sentence difference; slide 4 is the close.
 

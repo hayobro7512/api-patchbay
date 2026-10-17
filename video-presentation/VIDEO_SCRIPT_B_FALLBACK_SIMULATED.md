@@ -1,6 +1,6 @@
 # API Patchbay: 90-second video script, version B (simulated provider, fallback)
 
-Use this only if the real OpenAI run in `VIDEO_SCRIPT.md` (version A) will not work. It shows the same product on a fake provider, **Acme Pay**, across three small repos (Node, Python, Go). Say "simulated" out loud and show it in a caption, so nobody thinks it is a real company's API.
+Use this only if the real OpenAI run in `VIDEO_SCRIPT_A_REAL_OPENAI.md` (version A) will not work. It shows the same product on a fake provider, **Acme Pay**, across three small repos (Node, Python, Go). Say "simulated" out loud and show it in a caption, so nobody thinks it is a real company's API.
 
 Slot: 90 seconds, same as version A. Deck: `patchbay-simulated.pptx` in this folder (same 4 slides; slide 3 shows the Acme Pay field rename instead of the OpenAI one). Words to use: the **API provider** publishes the change; a **developer team** reviews and merges the PR, or lets auto-merge handle small passing changes. Never say "customer" or "users".
 

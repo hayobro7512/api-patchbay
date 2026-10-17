@@ -4,8 +4,12 @@
 demo-repos/go/
 demo-repos/node-storefront/
 demo-repos/node/
+demo-repos/openai-images/
 demo-repos/python/
 dist/
+docs/real-openai/oasdiff-*.json
+docs/real-openai/openai-changes.json
+docs/real-openai/openapi.*.yaml
 node_modules/
 runs/
 video-presentation/patchbay.orig.pptx

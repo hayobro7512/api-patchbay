@@ -1,0 +1,12 @@
+diff --git a/images.js b/images.js
+index 13e2e38..70205fd 100644
+--- a/images.js
++++ b/images.js
+@@ -12,6 +12,6 @@ async function call(method, path, body) {
+ 
+ // Returns the base64 image for a prompt. `user` identifies the end user for abuse monitoring.
+ export async function generateImage(prompt, size, user) {
+-  const r = await call('POST', '/images/generations', { prompt, size, user });
++  const r = await call('POST', '/images/generations', { model: 'gpt-image-1', prompt, size, safety_identifier: user });
+   return r.data[0].b64_json;
+ }

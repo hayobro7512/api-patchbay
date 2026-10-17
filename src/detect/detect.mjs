@@ -45,6 +45,25 @@ export function detect({ oldFile, newFile, provider, specUrl }) {
       migration_hint: `Always send '${nu}' in ${r.operation} ${r.path} requests.` });
   }
 
+  // existing optional property became required
+  while ((r = take((e) => e.id === 'request-property-became-required'))) {
+    const nu = /`([^`]+)`/.exec(r.text)[1];
+    mk({ kind: 'breaking', method: r.operation, path: r.path, location: 'request_param', name: nu,
+      summary: `Request parameter ${nu} became required on ${r.operation} ${r.path}.`, after: nu,
+      migration_hint: `Always send '${nu}' in ${r.operation} ${r.path} requests; pick the value explicitly, do not rely on a server default.` });
+  }
+
+  // deprecation + newly added optional property on same op = replacement (e.g. user -> safety_identifier)
+  while ((r = take((e) => e.id === 'request-property-deprecated'))) {
+    const old = /`([^`]+)`/.exec(r.text)[1];
+    const add = take((e) => e.id === 'new-optional-request-property' && e.operation === r.operation && e.path === r.path);
+    const nu = add && /`([^`]+)`/.exec(add.text)[1];
+    mk({ kind: 'deprecated', method: r.operation, path: r.path, location: 'request_param', name: old,
+      summary: nu ? `Request parameter ${old} is deprecated in favor of ${nu} on ${r.operation} ${r.path}.` : `Request parameter ${old} is deprecated on ${r.operation} ${r.path}.`,
+      before: old, ...(nu && { after: nu }),
+      migration_hint: nu ? `In every ${r.operation} ${r.path} request body, send '${nu}' instead of '${old}' (same value and type); '${old}' still works for now but will be removed.` : `Stop sending '${old}' in ${r.operation} ${r.path} requests.` });
+  }
+
   // endpoint removals; pair with an added endpoint of the same method for the replacement
   const added = raw.filter((e) => e.id === 'endpoint-added');
   while ((r = take((e) => /^api-path-removed|^api-removed|^endpoint-removed/.test(e.id)))) {

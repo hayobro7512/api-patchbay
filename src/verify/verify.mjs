@@ -51,10 +51,14 @@ const setupCmd = {
   go: 'go mod download',
 };
 
+// Contract mode: run provider/mock-api.mjs (driven by the published spec) on a free port and point ACME_BASE_URL at it.
+const MOCK = join(ROOT, 'provider/mock-api.mjs');
+const mockWrap = (cmd, node, mock, spec) => `L=$(mktemp); PORT=0 ${node} ${q(mock)} --spec ${q(spec)} >$L 2>&1 & M=$!; for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do grep -q listening $L && break; sleep 0.25; done; export ACME_BASE_URL=http://localhost:$(sed -n 's/.*listening on //p' $L); ${cmd}; R=$?; kill $M; exit $R`;
+
 function readJson(p, d) { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return d; } }
 const writeJson = (p, o) => writeFileSync(p, JSON.stringify(o, null, 2) + '\n');
 
-async function localSandbox({ repoDir, patchPath, testCmd, env }) {
+async function localSandbox({ repoDir, patchPath, testCmd, env, contract }) {
   const dir = mkdtempSync(join(tmpdir(), 'patchbay-'));
   try {
     let r = await run('git', ['clone', '-q', resolve(repoDir), join(dir, 'repo')]);
@@ -62,7 +66,8 @@ async function localSandbox({ repoDir, patchPath, testCmd, env }) {
     const cwd = join(dir, 'repo');
     r = await run('git', ['apply', resolve(patchPath)], { cwd });
     if (r.code) return { pass: false, log: 'git apply failed:\n' + r.out };
-    r = await run('sh', ['-c', `env ${env.map(q).join(' ')} PATH="$PATH:/opt/homebrew/bin" ${testCmd}`], { cwd });
+    const cmd = `env ${env.map(q).join(' ')} PATH="$PATH:/opt/homebrew/bin" ${testCmd}`;
+    r = await run('sh', ['-c', contract ? mockWrap(cmd, q(process.execPath), MOCK, resolve(contract)) : cmd], { cwd });
     return { pass: r.code === 0, log: r.out };
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }
@@ -70,7 +75,7 @@ async function localSandbox({ repoDir, patchPath, testCmd, env }) {
 const REMOTE = '/home/ubuntu/repo';
 const wrap = (c) => `export PATH="$PATH:/usr/local/go/bin" HOME=/home/ubuntu; cd ${REMOTE} && ${c}`;
 
-async function freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt, sb }) {
+async function freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt, sb, contract }) {
   const t = {};
   const ex = (vm, cmd, root) => fs('vm', 'exec', vm, '--timeout-ms', '300000', ...(root ? ['--linux-user', 'root'] : []), '--', 'sh', '-c', cmd);
   let vm;
@@ -111,12 +116,18 @@ async function freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt, sb 
   if (up.code) return { pass: false, log: 'patch upload failed:\n' + up.out, vm, t };
   const ap = await ex(vm, wrap('git apply /tmp/patch.diff'));
   if (ap.code) return { pass: false, log: 'git apply failed:\n' + ap.out, vm, t };
-  const [r, td] = await ms(() => ex(vm, wrap(`env ${env.map(q).join(' ')} ${testCmd}`)));
+  let cmd = `env ${env.map(q).join(' ')} ${testCmd}`;
+  if (contract) {
+    const spec = '/tmp/' + basename(contract);
+    for (const [from, to] of [[MOCK, '/tmp/mock-api.mjs'], [resolve(contract), spec]]) await fs('vm', 'scp', from, `${vm}:${to}`);
+    cmd = mockWrap(cmd, 'node', '/tmp/mock-api.mjs', spec);
+  }
+  const [r, td] = await ms(() => ex(vm, wrap(cmd)));
   t.test_ms = td;
   return { pass: r.code === 0, log: r.out, vm, t };
 }
 
-export async function verify({ repoDir, patchPath, runId, provider = 'unknown', sandbox = 'local', attempt, model = 'unknown', testCmd = './test.sh', env = [], changesPath, runsDir = join(ROOT, 'runs') }) {
+export async function verify({ repoDir, patchPath, runId, provider = 'unknown', sandbox = 'local', attempt, model = 'unknown', testCmd = './test.sh', env = [], changesPath, contract, runsDir = join(ROOT, 'runs') }) {
   loadEnv();
   const name = basename(resolve(repoDir));
   const dir = join(runsDir, runId, name);
@@ -137,8 +148,8 @@ export async function verify({ repoDir, patchPath, runId, provider = 'unknown', 
   let out;
   try {
     out = sandbox === 'freestyle'
-      ? await freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt: n, sb })
-      : await localSandbox({ repoDir, patchPath, testCmd, env });
+      ? await freestyleSandbox({ repoDir, patchPath, testCmd, env, attempt: n, sb, contract })
+      : await localSandbox({ repoDir, patchPath, testCmd, env, contract });
   } catch (e) { out = { pass: false, log: 'sandbox error: ' + e.message }; }
 
   const rec = { n, model, tests: out.pass ? 'pass' : 'fail', log_tail: tail(out.log || '') };
@@ -178,7 +189,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     if (flags.has(k)) o[k] = true; else if (k === 'env') o.env.push(a[++i]); else o[k] = a[++i];
   }
   if (o.cleanup) { await cleanup(o.run); process.exit(0); }
-  const r = await verify({ repoDir: o['repo-dir'], patchPath: o.patch, runId: o.run, provider: o.provider, sandbox: o.sandbox || 'local', attempt: o.attempt && +o.attempt, model: o.model, testCmd: o['test-cmd'], env: o.env, changesPath: o.changes });
+  const r = await verify({ repoDir: o['repo-dir'], patchPath: o.patch, runId: o.run, provider: o.provider, sandbox: o.sandbox || 'local', attempt: o.attempt && +o.attempt, model: o.model, testCmd: o['test-cmd'], env: o.env, contract: o.contract, changesPath: o.changes });
   console.log(JSON.stringify(r, null, 2));
   process.exit(r.tests === 'pass' ? 0 : 1);
 }

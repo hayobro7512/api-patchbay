@@ -11,7 +11,7 @@ import { verify, cleanup } from './verify/verify.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const run = promisify(execFile);
-const flags = new Set(['ship', 'keep']);
+const flags = new Set(['ship', 'keep', 'contract']);
 const o = { sandbox: 'freestyle', patch: 'live', repos: 'node,python,go', attempts: '3', old: 'provider/spec-v1.yaml', new: 'provider/spec-v2.yaml' };
 const a = process.argv.slice(2);
 for (let i = 0; i < a.length; i++) { const k = a[i].replace(/^--/, ''); o[k] = flags.has(k) ? true : a[++i]; }
@@ -68,7 +68,7 @@ async function repoFlow(lang) {
     }
     if (prevVm && o.sandbox === 'freestyle') await killVm(prevVm); // stay under the Free plan VM cap
     log(lang, `attempt ${n}: verifying in ${o.sandbox}`);
-    const r = await verify({ repoDir, patchPath: patchFile, runId, provider, sandbox: o.sandbox, attempt: n, model, env: ['ACME_API_VERSION=v2'], changesPath });
+    const r = await verify({ repoDir, patchPath: patchFile, runId, provider, sandbox: o.sandbox, attempt: n, model, env: ['ACME_API_VERSION=v2'], changesPath, contract: o.contract && resolve(ROOT, o.new) });
     log(lang, `attempt ${n}: tests ${r.tests}${r.vm_id ? ` (vm ${r.vm_id})` : ''}`);
     if (r.tests === 'pass') {
       if (o.ship) {

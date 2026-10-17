@@ -19,5 +19,5 @@ echo "dashboard http://localhost:8801"
 echo "feed      http://localhost:8803/feed/acme-pay.json"
 echo "flip to v2 with:  sh scripts/flip.sh v2    (watcher then runs the pipeline)"
 echo
-if [ $# -eq 0 ]; then set -- --sandbox freestyle --patch live --ship; fi
+if [ $# -eq 0 ]; then set -- --sandbox freestyle --patch live --contract --ship; fi
 node src/live.mjs -- "$@"

@@ -1,0 +1,6 @@
+diff --git a/src/images.js b/src/images.js
+--- a/src/images.js
++++ b/src/images.js
+@@ -5,3 +5,3 @@
+-  return post('/images/generations', { prompt, user });
++  return post('/images/generations', { prompt, model: 'dall-e-3', safety_identifier: user });

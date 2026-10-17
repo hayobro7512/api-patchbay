@@ -1,0 +1,3 @@
+{"run_id":"run-openai","provider":"openai","repo":"hayobro7512/patchbay-demo-node","status":"shipped","vm_id":"vm-5c1e0a77b3d2","sandbox":"freestyle","attempts":[
+{"n":1,"model":"deepseek-v4.1-flash","tests":"pass","log_tail":"ok 1 - image request sends model\nok 2 - image request sends safety_identifier\n# pass 2\n# fail 0"}],
+"pr_url":"https://github.com/hayobro7512/patchbay-demo-node/pull/14","started_at":"2026-10-17T15:00:30Z","finished_at":"2026-10-17T15:00:44Z","merged":false}

@@ -2,7 +2,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const Q = location.search; // keeps ?mock=1 on every API call
 const withQ = (p, extra = '') => p + (Q ? Q + (extra ? '&' + extra : '') : (extra ? '?' + extra : ''));
-const STEPS = [['locating', 'Locate'], ['patching', 'Patch'], ['verifying', 'Verify in VM'], ['shipped', 'PR']];
+const STEPS = [['locating', 'Locate'], ['patching', 'Patch'], ['verifying', 'VM test'], ['shipped', 'PR']];
 const IDX = { queued: -1, locating: 0, patching: 1, verifying: 2, passed: 3, shipped: 4 };
 const toggled = new Map(); // user-set <details> open state survives re-render
 const ui = new Map();      // per-repo inline state: {confirm:bool, busy:bool, msg, ok}
@@ -29,15 +29,16 @@ function relevant(log) {
 }
 
 function pipeline(r) {
-  const i = r.status === 'failed' ? 2 : IDX[r.status] ?? -1;
+  const i = r.status === 'failed' ? 2 : IDX[r.status] ?? -1, n = r.attempts.length;
+  const caps = ['', n ? n + (n === 1 ? ' try' : ' tries') : '', '', (r.pr_url || '').match(/\/pull\/(\d+)/) ? '#' + r.pr_url.match(/\/pull\/(\d+)/)[1] : ''];
   return '<ol class="pipe" aria-label="Pipeline">' + STEPS.map(([, label], k) => {
     let c = '';
     if (r.status === 'failed') c = k < 2 ? 'done' : k === 2 ? 'fail' : '';
     else if (k < i) c = 'done';
     else if (k === i) c = 'active';
-    if (r.status === 'shipped' && k === 3) c = 'done ship';
-    const st = c.includes('fail') ? 'failed' : c.includes('done') ? 'done' : c === 'active' ? 'in progress' : 'waiting';
-    return `<li class="step ${c}"><span class="sr">${esc(label)}: ${st}</span><span aria-hidden="true">${esc(label)}</span></li>`;
+    if (r.status === 'shipped' && k === 3) c = 'done';
+    const st = c === 'fail' ? 'failed' : c === 'done' ? 'done' : c === 'active' ? 'in progress' : 'waiting';
+    return `<li class="step ${c}"><i class="dot" aria-hidden="true"></i><span class="sr">${esc(label)}: ${st}</span><b aria-hidden="true">${esc(label)}</b><small aria-hidden="true">${esc(caps[k]) || '&nbsp;'}</small></li>`;
   }).join('') + '</ol>';
 }
 
@@ -57,7 +58,13 @@ function attempts(r) {
 function actions(r) {
   const s = ui.get(r.repo) || {}, name = esc(String(r.repo).split('/').pop());
   let h = '<div class="btns">';
-  if (r.pr_url) {
+  if (r.pr_url && data.mock) {
+    const tip = 'mock data: no real PR';
+    h += `<button type="button" class="btn" disabled title="${tip}" data-action="open-pr" aria-label="Open pull request for ${name} (${tip})">Open pull request</button>
+      <button type="button" class="btn" disabled title="${tip}" data-action="review-diff" aria-label="Review diff for ${name} (${tip})">Review diff</button>`;
+    if (r.status === 'shipped' && !r.merged) h += `<button type="button" class="btn" disabled title="${tip}" data-action="merge" aria-label="Merge for ${name} (${tip})">Merge</button>`;
+    h += `<span class="mocknote">${tip}</span>`;
+  } else if (r.pr_url) {
     const pr = esc(r.pr_url);
     h += `<a class="btn primary" data-action="open-pr" href="${pr}" target="_blank" rel="noopener" aria-label="Open pull request for ${name}">Open pull request</a>`;
     h += `<a class="btn" data-action="review-diff" href="${pr.replace(/\/+$/, '')}/files" target="_blank" rel="noopener" aria-label="Review diff for ${name}">Review diff</a>`;

@@ -20,7 +20,7 @@ if(oi.real_or_simulated!=="real"||demo.real_or_simulated!=="simulated") throw ne
 if(demo.repos.length!==3) throw new Error("expected 3 repos in simulated run");
 for(const x of [...demo.repos,...oi.repos]) if(!ok.includes(x.status)) throw new Error("bad status "+x.status);
 if(demo.changes.changes.length!==4) throw new Error("changes missing");
-if(!/safety_identifier/.test(oi.repos[0].diff_summary.text)) throw new Error("diff summary missing identifiers");
+if(!/safety_identifier/.test(oi.repos.find(r=>r.repo.includes("openai-images")).diff_summary.text)) throw new Error("diff summary missing identifiers");
 '
 H=$(curl -sf "$B/")
 echo "$H" | grep -qi '<!doctype html' || { echo "index is not HTML"; exit 1; }
@@ -32,7 +32,7 @@ curl -sf "$B/api/latest" | node -e '
 const d=JSON.parse(require("fs").readFileSync(0,"utf8"));
 if(!Array.isArray(d.next_actions)||!d.next_actions.some(a=>a.id.startsWith("merge:")&&a.method==="POST"&&a.body&&a.body.pr_url)) throw new Error("next_actions missing merge");
 for(const k of ["provider","from_version","to_version","real_or_simulated","summary","changes","repos"]) if(d[k]==null) throw new Error("latest."+k+" missing");
-if(d.real_or_simulated!=="real"||d.repos[0].repo.indexOf("patchbay-demo-openai-images")<0) throw new Error("latest should be the openai run");
+if(d.real_or_simulated!=="real"||!d.repos.some(r=>r.repo.includes("patchbay-demo-openai-images"))||d.repos.length!==3) throw new Error("latest should be the openai run");
 '
 [ -n "$(curl -sf "$B/agents.md")" ] || { echo "agents.md empty"; exit 1; }
 curl -sfI "$B/agents.md" | grep -qi 'text/markdown' || { echo "agents.md type"; exit 1; }

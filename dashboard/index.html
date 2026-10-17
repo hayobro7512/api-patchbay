@@ -21,25 +21,24 @@
   <section id="hero" class="hero" aria-label="What changed and what happened">
     <div class="hero-top">
       <span id="rs-label" class="rs"></span>
+      <div id="head" class="head"></div>
       <label class="runsel" id="runsel-wrap" hidden>Run
         <select id="runsel" aria-label="Choose a run"></select>
       </label>
     </div>
-    <div id="head" class="head"></div>
     <p id="summary" class="summary" aria-live="polite"></p>
+    <p class="diff-line" id="differentiator">Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team.</p>
   </section>
 
-  <p class="diff-line" id="differentiator">Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team.</p>
 
-  <h2 class="h2">Repos</h2>
   <section id="repos" class="repos" aria-label="Repos being patched"></section>
 
+  <div class="below">
   <details id="feed" class="feed" open>
     <summary>What the API provider changed <span id="feed-count"></span></summary>
     <ol id="feed-list"></ol>
   </details>
 
-  <div class="two">
     <section id="for-teams" class="panel teams" aria-labelledby="h-teams">
       <h2 id="h-teams">For developer teams</h2>
       <p class="lead">Review the pull request on each repo card above, then merge. Tools for this run:</p>

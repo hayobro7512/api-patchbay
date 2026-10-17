@@ -2,7 +2,7 @@
 
 The judges see only this video, not a live demo. **This is version A: the real OpenAI change.** If the real run fails for any reason, record `VIDEO_SCRIPT_B_FALLBACK_SIMULATED.md` (version B, the Acme Pay fallback) instead. Both fit 90 seconds, so there is no need for extra time. Record the real one first.
 
-Slot: 90 seconds. Deck: `patchbay.pptx` (4 slides, dark theme) in this folder (version B uses `patchbay-simulated.pptx`). Slide 3 carries the one-sentence difference; slide 4 is the close.
+Slot: 90 seconds. Deck: `patchbay.pptx` (4 slides, dark theme) in this folder (version B uses `patchbay-simulated.pptx`). Slide 3 carries the one-sentence difference and is the closing slide. Slide 4 is unused.
 
 Who uses it, in the words to use everywhere: the **API provider** publishes the change; a **developer team** (the engineers at a company that integrates that API) reviews and merges the pull request, or lets auto-merge handle small passing changes. Say "developer team", never "customer" or "users".
 
@@ -41,7 +41,7 @@ There is no live Q and A, so the video itself must say what is real and what is 
 | 0:31-0:55 | Dashboard, three repo cards (LOCATE, PATCH, VM TEST, PR; "Tested in a clean Freestyle VM" badge) | "An agent finds the code in each repo, writes the fix, and tests it in a clean Freestyle VM. If a test fails, it retries from a snapshot." | Do not click. The real run takes 35 to 80 seconds (47 s in my last test). Record the whole run, then speed this clip up to fit 24 seconds and add a small "2x" caption. |
 | 0:55-1:07 | PR tab | "The developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes." | Click "Open pull request" on a card (do not click Merge). Scroll once to the change table, then to the "Verified in a clean Freestyle VM" line. |
 | 1:07-1:15 | Terminal, outside agent clip (6 to 8 seconds, sped up) | "Any coding agent can use the same feed. This one has never seen the repo." | Play the clip of `sh scripts/outside-agent/run.sh` ending on `RESULT: PASS`. Caption: "Claude Code, from the feed alone." |
-| 1:15-1:30 | Slide 3, then slide 4 | The one sentence below, then nothing more. | Show slide 3 for the sentence, then slide 4 for the last 3 seconds. Stop recording. |
+| 1:15-1:30 | Slide 3 (the sentence is on screen) | The one sentence below. | Stay on slide 3 until you finish speaking it, hold 2 seconds, stop recording. Slide 4 ("What comes next") is not used in this video. |
 
 **Is the outside-agent scene necessary?** It is the only proof in the video of the claim in the one sentence ("any coding agent"). Without it that claim is unproven. If the cut runs over 90 seconds, drop it before cutting anything else, and also drop the words "any coding agent" from the sentence you speak. Record it separately and test it before the real recording (`! sh scripts/outside-agent/run.sh`).
 

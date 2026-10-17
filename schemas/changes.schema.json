@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "changes.schema.json",
+  "title": "Patchbay change feed",
+  "description": "Output of the detect step and the public feed served at GET /feed/<provider>.json. Built for agents to read.",
+  "type": "object",
+  "required": ["provider", "from_version", "to_version", "spec_url", "generated_at", "changes"],
+  "properties": {
+    "provider": { "type": "string", "description": "Provider slug, for example acme-pay." },
+    "from_version": { "type": "string" },
+    "to_version": { "type": "string" },
+    "spec_url": { "type": "string", "format": "uri" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "method", "path", "summary", "migration_hint"],
+        "properties": {
+          "id": { "type": "string", "description": "Stable id, for example chg_001." },
+          "kind": { "enum": ["breaking", "deprecated", "added"] },
+          "method": { "type": "string", "description": "HTTP method, upper case." },
+          "path": { "type": "string", "description": "Endpoint path as in the spec." },
+          "location": { "enum": ["endpoint", "request_param", "response_field", "enum_value"] },
+          "name": { "type": "string", "description": "Param, field or enum value affected." },
+          "summary": { "type": "string" },
+          "before": { "type": "string" },
+          "after": { "type": "string" },
+          "migration_hint": { "type": "string", "description": "One or two sentences telling a coding agent what to change." }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

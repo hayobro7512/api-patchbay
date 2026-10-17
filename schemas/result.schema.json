@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "result.schema.json",
+  "title": "Patchbay run result",
+  "description": "One file per repo per run. The dashboard reads only this.",
+  "type": "object",
+  "required": ["run_id", "provider", "repo", "status", "attempts", "started_at"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "provider": { "type": "string" },
+    "repo": { "type": "string", "description": "owner/name or local path of the customer repo." },
+    "status": { "enum": ["queued", "locating", "patching", "verifying", "passed", "failed", "shipped"] },
+    "vm_id": { "type": ["string", "null"], "description": "Freestyle VM id, or null for the local sandbox." },
+    "sandbox": { "enum": ["freestyle", "local"] },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["n", "model", "tests"],
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "model": { "type": "string" },
+          "tests": { "enum": ["pass", "fail"] },
+          "log_tail": { "type": "string", "description": "Last lines of test output." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pr_url": { "type": ["string", "null"] },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "additionalProperties": false
+}

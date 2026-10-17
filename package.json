@@ -1,0 +1,13 @@
+{
+  "name": "api-patchbay",
+  "private": true,
+  "type": "module",
+  "description": "Provider-published change feed plus an agent that patches customer repos and opens verified PRs.",
+  "scripts": {
+    "demo": "sh scripts/demo-up.sh",
+    "flip": "sh scripts/flip.sh v2",
+    "reset": "sh scripts/demo-reset.sh",
+    "run": "node src/run.mjs",
+    "check": "sh provider/check.sh && sh dashboard/check.sh && sh src/detect/check.sh && sh src/feed/check.sh && sh src/patch/check.sh mock"
+  }
+}

@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: Acme Pay
+  version: 1.0.0
+servers:
+  - url: http://localhost:8800
+paths:
+  /v1/charges:
+    post:
+      summary: Create a charge
+      operationId: createCharge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amount_cents]
+              properties:
+                amount_cents: {type: integer}
+                currency: {type: string}
+                customer_id: {type: string}
+      responses:
+        '200':
+          description: Charge created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: {type: string}
+                  status: {type: string, enum: [succeeded, failed]}
+  /v1/customers/{id}:
+    get:
+      summary: Get a customer
+      operationId: getCustomer
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: string}}
+      responses:
+        '200':
+          description: Customer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: {type: string}
+                  email: {type: string}
+  /v1/legacy/tokens/{token}:
+    delete:
+      summary: Revoke a legacy token
+      operationId: revokeLegacyToken
+      parameters:
+        - {name: token, in: path, required: true, schema: {type: string}}
+      responses:
+        '204': {description: Revoked}

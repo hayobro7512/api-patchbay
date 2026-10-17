@@ -1,0 +1,27 @@
+diff --git a/src/lib/payments/client.js b/src/lib/payments/client.js
+index d1c387b..ed16856 100644
+--- a/src/lib/payments/client.js
++++ b/src/lib/payments/client.js
+@@ -12,7 +12,7 @@ async function request(method, path, body) {
+ 
+ export const payments = {
+   charge: ({ cents, currency = 'usd', customer }) =>
+-    request('POST', '/v1/charges', { amount_cents: cents, currency, customer_id: customer }),
++    request('POST', '/v1/charges', { amount_minor: cents, currency, customer_id: customer }),
+   customer: (id) => request('GET', `/v1/customers/${encodeURIComponent(id)}`),
+-  revokeToken: (token) => request('DELETE', `/v1/legacy/tokens/${encodeURIComponent(token)}`),
++  revokeToken: (token) => request('DELETE', `/v1/tokens/${encodeURIComponent(token)}`),
+ };
+diff --git a/src/services/checkout.js b/src/services/checkout.js
+index f2b2c9a..3044336 100644
+--- a/src/services/checkout.js
++++ b/src/services/checkout.js
+@@ -6,6 +6,8 @@ export function orderStateFor(charge) {
+       return 'paid';
+     case 'failed':
+       return 'payment_failed';
++    case 'requires_review':
++      return 'pending_review';
+     default:
+       throw new Error(`unhandled charge status: ${charge.status}`);
+   }

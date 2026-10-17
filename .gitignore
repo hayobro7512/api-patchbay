@@ -1,0 +1,9 @@
+.env
+*.key
+demo-repos/go/
+demo-repos/node-storefront/
+demo-repos/node/
+demo-repos/python/
+dist/
+node_modules/
+runs/

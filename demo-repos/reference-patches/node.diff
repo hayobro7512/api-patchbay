@@ -1,0 +1,25 @@
+diff --git a/acme.js b/acme.js
+index 432d1ac..4e68b9f 100644
+--- a/acme.js
++++ b/acme.js
+@@ -11,17 +11,18 @@ async function call(method, path, body) {
+ }
+ 
+ export const createCharge = (amount, currency, customerId) =>
+-  call('POST', '/v1/charges', { amount_cents: amount, currency, customer_id: customerId });
++  call('POST', '/v1/charges', { amount_minor: amount, currency, customer_id: customerId });
+ 
+ export const getCustomer = (id) => call('GET', `/v1/customers/${encodeURIComponent(id)}`);
+ 
+ export const revokeLegacyToken = (token) =>
+-  call('DELETE', `/v1/legacy/tokens/${encodeURIComponent(token)}`);
++  call('DELETE', `/v1/tokens/${encodeURIComponent(token)}`);
+ 
+ export function handleCharge(charge) {
+   switch (charge.status) {
+     case 'succeeded': return 'fulfill';
+     case 'failed': return 'retry';
++    case 'requires_review': return 'hold';
+     default: throw new Error(`unknown charge status: ${charge.status}`);
+   }
+ }

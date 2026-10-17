@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Patchbay</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="brand-mark" aria-hidden="true"></span>API PATCHBAY</div>
+  <div id="live" class="live" role="status">connecting</div>
+</header>
+<main>
+  <div id="mock" class="mock" role="alert" hidden>MOCK DATA - not a real run</div>
+  <section id="head" class="head" aria-label="Provider change"></section>
+  <section id="repos" class="repos" aria-label="Repositories"></section>
+  <details id="feed" class="feed">
+    <summary>Change feed <span id="feed-count"></span></summary>
+    <ol id="feed-list"></ol>
+  </details>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

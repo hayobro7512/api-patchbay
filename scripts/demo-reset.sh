@@ -4,5 +4,6 @@ cd "$(dirname "$0")/.." || exit 1
 export PATH="$PATH:/opt/homebrew/bin"
 sh scripts/flip.sh v1 2>/dev/null
 sh src/ship/reset.sh
-rm -rf runs/run-* runs/specs runs/outside-agent
+# remove every run folder (helper test runs included); keep the feed and logs
+for d in runs/*/; do case "$d" in runs/feed/|runs/logs/) ;; *) rm -rf "$d" ;; esac; done
 echo "reset done"

@@ -44,7 +44,7 @@ The judges see a 90-second video, so the real case leads. In OpenAI's public spe
 
 Who uses it: the API provider publishes the change; a developer team at a company that integrates the API reviews and merges the PR, or lets auto-merge handle small passing changes (`--merge auto`). Not end users of any app.
 
-The one-sentence difference: "Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM."
+The one-sentence difference: "Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team."
 
 ## Simulated demo (secondary)
 

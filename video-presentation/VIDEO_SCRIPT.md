@@ -8,7 +8,7 @@ Who uses it, in the words to use everywhere: the **API provider** publishes the 
 
 ## The one sentence (say it once, near the end)
 
-"Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM."
+"Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team."
 
 ## The real situation
 
@@ -48,7 +48,7 @@ Optional 8-second clip, only if the cut is under 90 seconds: an outside agent (C
 >
 > The developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes.
 >
-> Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM.
+> Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team.
 >
 > The provider ships once. Every developer team gets a tested PR.
 

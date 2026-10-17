@@ -25,7 +25,7 @@ if(!/safety_identifier/.test(oi.repos[0].diff_summary.text)) throw new Error("di
 H=$(curl -sf "$B/")
 echo "$H" | grep -qi '<!doctype html' || { echo "index is not HTML"; exit 1; }
 echo "$H" | grep -q "MOCK DATA - not a real run" || { echo "banner missing"; exit 1; }
-echo "$H" | grep -qF "Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM." || { echo "differentiator missing"; exit 1; }
+echo "$H" | grep -qF "Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team." || { echo "differentiator missing"; exit 1; }
 echo "$H" | grep -q 'id="patchbay-state"' || { echo "patchbay-state missing"; exit 1; }
 for f in app.js styles.css; do curl -sf "$B/$f" >/dev/null || { echo "$f missing"; exit 1; }; done
 curl -sf "$B/api/latest" | node -e '

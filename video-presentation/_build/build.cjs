@@ -76,7 +76,7 @@ const icon = async (name, color = K.amber) => {
     T(s, 'tests passed', { x: 7.35, y: 3.43, w: 1.65, h: 0.32, align: 'center', valign: 'middle', fontFace: B, fontSize: 12, bold: true, color: K.green, objectName: 'Pass badge text' });
     T(s, SIM ? '- body: { amount_cents: amount }' : '- body: { prompt, size, user }', { x: 1.05, y: 3.9, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.red, valign: 'middle', objectName: 'Diff removed' });
     T(s, SIM ? '+ body: { amount_minor: amount }' : '+ body: { prompt, size, model, safety_identifier }', { x: 1.05, y: 4.4, w: 7.9, h: 0.4, fontFace: M, fontSize: 16, color: K.green, valign: 'middle', objectName: 'Diff added' });
-    T(s, "Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a PR that is already fixed and tested in a clean VM.", { x: 0.8, y: 5.1, w: 8.4, h: 0.42, fontFace: B, fontSize: 11, italic: true, color: K.amber, valign: 'top', objectName: 'Differentiator' });
+    T(s, "Dependency bots start from each repo; Patchbay starts from the provider, with one agent-readable change feed that any coding agent can turn into a tested pull request for every developer team.", { x: 0.8, y: 5.1, w: 8.4, h: 0.42, fontFace: B, fontSize: 11, italic: true, color: K.amber, valign: 'top', objectName: 'Differentiator' });
     s.addNotes('Optional. Real OpenAI change: model became required, user deprecated for safety_identifier.');
   });
 

@@ -7,6 +7,9 @@ Answers use only what the build actually does. Numbers come from runs on 2026-10
 **Why not Dependabot or Renovate?**
 Those bump dependency versions for you. They don't read a provider's API changes and rewrite the calling code. Here the provider publishes a structured change feed, and an agent fixes the customer's code, proves the fix in a VM, and opens the PR. The provider drives it.
 
+**Isn't there already a tool that turns API breaks into PRs?**
+Yes: an open-source agent called Patch (patchhq/patch, per its Product Hunt page; I have not read its code) watches the APIs a project uses and opens PRs with fixes after retrying against the type checker and tests. It is installed per repo by the developer team. Patchbay starts from the other end: the provider's change becomes one agent-readable feed that any coding agent, ours or yours, can use for every developer team, and our own agent verifies in a clean VM with snapshot-and-fork retries and parallel fan-out. Do not claim nobody does the detection or the retry loop; claim the feed as the interface.
+
 **Why not just tell Claude Code or Devin "migrate to Acme v2"?**
 You can, and our outside-agent demo does exactly that, but with the feed. The feed is the product: a small, versioned file any agent can read, so the provider's changes arrive as data and not as a changelog nobody reads. The agent is replaceable. The standard is not.
 

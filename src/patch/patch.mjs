@@ -47,12 +47,14 @@ async function call(model, messages, ms) {
 let think = true; // reasoning on: slower but reliable (9 of 9 first-attempt passes); PATCH_EXTRA='{"thinking":{"type":"disabled"}}' is the fast mode
 async function chat(messages) {
   const primary = endpoint().model;
-  const fallbacks = (process.env.PATCH_FALLBACK ?? primary).split(',').map((m) => m.trim()).filter(Boolean); // default: a second identical request (glm-5.3-flash measured slower, 43 s vs 9 s)
-  const ms = +process.env.PATCH_TIMEOUT_MS || 150000, hedge = +process.env.PATCH_HEDGE_MS || 25000;
+  const fallbacks = (process.env.PATCH_FALLBACK ?? 'glm-5.3-flash').split(',').map((m) => m.trim()).filter(Boolean); // default: glm-5.3-flash. deepseek with reasoning stalled past 90 s on openai-images-py while glm answered in 17 s
+  const ms = +process.env.PATCH_TIMEOUT_MS || 90000, hedge = +process.env.PATCH_HEDGE_MS || 25000;
   let timer;
   const tries = [call(primary, messages, ms)];
   if (fallbacks[0]) tries.push(new Promise((res, rej) => { timer = setTimeout(() => call(fallbacks[0], messages, ms).then(res, rej), hedge); }));
-  try { return await Promise.any(tries); } finally { clearTimeout(timer); }
+  try { return await Promise.any(tries); }
+  catch (e) { throw new Error('model unavailable: ' + (e.errors ?? [e]).map((x) => x.message).join(' | ')); }
+  finally { clearTimeout(timer); }
 }
 
 // ---- locate
@@ -80,7 +82,7 @@ for (const f of files) {
 console.error(`located ${ctx.length} files`);
 
 // ---- prompt
-const system = `You are a code migration tool. Output ONE unified diff (git format, paths relative to repo root, a/ and b/ prefixes) that applies the API changes to the repo, and nothing else (no prose). Make minimal edits, only what the changes require. Keep hunk headers and line counts correct and include 3 lines of context. Do not touch test files unless one calls the old API directly; the goal is code that passes the existing tests when the provider runs the new API version.`;
+const system = `You are a code migration tool. Output ONE unified diff (git format, paths relative to repo root, a/ and b/ prefixes) that applies the API changes to the repo, and nothing else (no prose). Make minimal edits, only what the changes require. Never rename, add or remove parameters of the repo's own functions or change their signatures or return values: callers and tests depend on them. Change only what is sent to or read from the API (request bodies, paths, response handling), mapping the repo's existing parameter names onto the new API fields. Keep hunk headers and line counts correct and include 3 lines of context. Do not touch test files unless one calls the old API directly; the goal is code that passes the existing tests when the provider runs the new API version.`;
 const feedback = a.feedback ? `\n\nA previous attempt FAILED the tests. Failing output:\n${readFileSync(a.feedback, 'utf8').slice(-4000)}\nProduce a different, corrected diff.` : '';
 const user = `API changes (JSON):\n${JSON.stringify(changes.changes, null, 1)}\n\nRepo files:\n${ctx.join('\n\n')}${feedback}`;
 
@@ -104,3 +106,4 @@ if (err) {
 writeFileSync(out, diff);
 if (err) { console.error('FAILED: diff still does not apply: ' + err.split('\n')[0]); process.exit(1); }
 console.error(`wrote ${out}`);
+process.exit(0); // the hedged loser request may still be pending; do not wait for its timeout

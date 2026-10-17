@@ -6,7 +6,13 @@ Note: the example repos the pipeline patches (`patchbay-demo-*`) are private Git
 
 ## Who it is for
 
-Businesses, not app users. The buyers are API providers (fewer support tickets, faster adoption of new features) and the integration or platform teams that maintain many third-party API integrations. The "customer" who reviews a PR is a developer on such a team, not an end user of the product built on the API.
+- **API providers** (payments, messaging, AI, maps, data and more): publish a change once, and watch developer teams adopt it faster, with fewer support tickets and fewer broken integrations.
+- **Developer teams and engineering organizations** that build on third-party APIs: receive a tested pull request in each repo instead of reading changelogs, in whatever language the repo uses.
+- **Platform, integrations and developer-experience teams** that keep dozens of vendor integrations current across many repos.
+- **AI coding agents and the people who build them**: a versioned, machine-readable change feed that any agent can use through a short `AGENTS.md` snippet.
+- **Reliability and engineering leaders**: fewer outages from API changes nobody noticed, with human review by default or opt-in auto-merge under a policy the team sets.
+
+From startups to large enterprises, anyone who depends on an API can use it.
 
 ## What it does
 
@@ -55,7 +61,6 @@ dashboard/       status page that reads runs/<run>/<repo>/result.json
 schemas/         the three contracts between the pieces
 ```
 
-## Honest limits
+## Current scope
 
-- Fake provider and small repos. Real migrations are harder, and patch quality depends on the model. In testing, DeepSeek V4.1 Flash passed 8 of 9 first-shot runs; the retry loop covers the rest.
-- Developer teams still review and merge every PR (unless they opt in to auto-merge).
+Demonstrated on a real OpenAI spec change (`POST /images/generations`, May to October 2026) replayed on three example repos in Node, Python and Go. Developer teams review each pull request, or opt in to auto-merge for small passing changes.

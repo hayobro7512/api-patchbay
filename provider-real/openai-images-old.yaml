@@ -1,0 +1,55 @@
+# TRIMMED to ONE operation (POST /images/generations) from the real OpenAI spec.
+# Source: https://raw.githubusercontent.com/openai/openai-openapi/5162af98d3147432c14680df789e8e12d4891e6b/openapi.yaml  (2026-05-13)
+# Compared pair: 5162af98 (2026-05-13) -> f601a440 (2026-10-15, 'Add safety_identifier parameter to replace deprecated user field').
+# Schemas inlined (no $ref/allOf), nullable/anyOf wrappers and x-* extensions dropped, long descriptions shortened; property names, types, required list kept.
+# Properties kept: prompt, model, n, size, user. Other real properties (quality, style, ...) omitted.
+openapi: 3.0.3
+info:
+  title: OpenAI API (images generations, trimmed)
+  version: 2026-05-13
+paths:
+  /images/generations:
+    post:
+      operationId: createImage
+      summary: Create image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [prompt]
+              properties:
+                prompt:
+                  type: string
+                  description: A text description of the desired image(s).
+                model:
+                  type: string
+                  description: The model to use for image generation. Defaults to dall-e-2 unless a parameter specific to the GPT image models is used.
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  description: The number of images to generate. Must be between 1 and 10.
+                size:
+                  type: string
+                  description: The size of the generated images, for example 1024x1024.
+                user:
+                  type: string
+                  description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created: {type: integer}
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        b64_json: {type: string}
+

@@ -9,3 +9,7 @@ for R in $(node -e 'console.log(Object.values(require("./repos.json")).join(" ")
     gh api -X DELETE "repos/$R/git/$REF" >/dev/null && echo "deleted $R $REF"
   done
 done
+# also remove throwaway demo base branches used by --base autodemo
+for R in $(node --input-type=commonjs -e 'console.log(Object.values(JSON.parse(require("fs").readFileSync("repos.json"))).join(" "))'); do
+  gh api -X DELETE "repos/$R/git/refs/heads/autodemo" >/dev/null 2>&1 && echo "deleted $R autodemo"
+done

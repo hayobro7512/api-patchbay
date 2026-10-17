@@ -34,6 +34,15 @@ It never edits main. It opens a PR, and the code runs in an isolated VM. No GitH
 **What did you build in a day?**
 The whole pipeline: detect, feed, patch, verify, ship, dashboard and the outside-agent proof. Solo, with subagents.
 
+**Who is the customer? Regular users of an app like Uber can't merge a PR.**
+Right: they never see it. The customer is the developer team inside a company that integrates an API (a payments, maps or messaging API, for example). An engineer on that team reviews the PR the same way they review a Dependabot update. The buyers are API providers, who pay to cut support load and speed up feature adoption, and integration or platform teams that maintain many third-party integrations.
+
+**Can it merge without human review?**
+Yes, as an opt-in policy: `--merge auto`. Patchbay merges only if the tests passed in the VM and the diff is at most N changed lines (default 200); otherwise the PR stays open for a human. Default is human review. A team could also require its own CI first through branch protection. In the demo, auto-merge targets a throwaway `autodemo` branch so `main` stays clean.
+
+**How does it know what changed?**
+It diffs the old and new OpenAPI spec (`oasdiff`), which lists every endpoint, parameter, required field and enum value that changed. It does not guess. It can't see changes that are not in the spec (behavior, rate limits), and providers without a public spec are out of scope.
+
 ## Do not claim
 
 - A real Stripe or other real-provider migration.

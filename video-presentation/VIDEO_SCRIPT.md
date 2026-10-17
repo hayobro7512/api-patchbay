@@ -24,7 +24,7 @@ Do these first so nothing is slow on camera.
 | 0:03–0:13 | Slide 2 (problem) | "A founder who worked at AWS says over 30% of their downtime came from API changes nobody noticed. Changelogs don't get read, and fixing it meant editing every customer's code. Now agents can." | Advance to the dashboard on the last word. |
 | 0:13–0:23 | Dashboard, feed panel | "Patchbay turns the provider's spec change into a feed built for agents. Acme Pay just shipped v2." | Flip the provider to v2 (`npm run flip`). The feed shows 2 breaking changes and 2 additions. |
 | 0:23–0:55 | Dashboard, three repo cards | "Our agent finds the affected code in each repo, writes a patch, and tests it in a clean Freestyle VM. If a test fails, it branches from a snapshot and tries again." | Watch the three repos move through locating, patching, verifying, passed. Do not click anything. |
-| 0:55–1:10 | PR tab | "Each customer gets a pull request with the diff and the test result. They review and merge." | Switch to the PR tab. Scroll once to the diff, then to the "verified in a clean VM" line. |
+| 0:55–1:10 | PR tab | "Each customer's developer team gets a pull request with the diff and the test result. They review and merge, or turn on auto-merge for safe changes." | Switch to the PR tab. Scroll once to the diff, then to the "verified in a clean VM" line. |
 | 1:10–1:20 | Outside-agent clip | "Any coding agent can use the feed. This one has never seen this repo." | Play the 8-second clip. |
 | 1:20–1:30 | Slide 4 (next steps) | "Next: real providers, starting with Stripe's public spec. The provider pays. The provider ships once, and every customer is patched." | Switch to slide 4. Stop recording on the last word. |
 
@@ -42,7 +42,7 @@ About 190 words at a calm pace. Read it aloud with a timer; if you pass 1:25, cu
 >
 > Our agent finds the affected code in each repo, writes a patch, and tests it in a clean Freestyle VM. If a test fails, it branches from a snapshot and tries again.
 >
-> Each customer gets a pull request with the diff and the test result. They review and merge.
+> Each customer's developer team gets a pull request with the diff and the test result. They review and merge, or turn on auto-merge for safe changes.
 >
 > Any coding agent can use the feed. This one has never seen this repo.
 >

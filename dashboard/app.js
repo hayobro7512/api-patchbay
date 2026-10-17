@@ -34,7 +34,7 @@ function card(r) {
   const cls = r.status === 'queued' ? 'queued' : ['passed', 'shipped', 'failed'].includes(r.status) ? r.status : 'active';
   const sb = r.sandbox === 'freestyle' ? `<span class="badge fs">Freestyle VM ${esc(r.vm_id || '')}</span>` : '<span class="badge">Local sandbox</span>';
   return `<article class="card s-${cls}" data-id="${esc(r.run_id + r.repo)}">
-    <div class="row"><div class="name" title="${esc(r.repo)}">${esc(String(r.repo).split('/').pop())}</div><div class="status">${esc(r.status)}</div></div>
+    <div class="row"><div class="name" title="${esc(r.repo)}">${esc(String(r.repo).split('/').pop())}</div><div class="status">${esc(r.merged ? 'merged' : r.status)}</div></div>
     ${pipeline(r)}
     <div class="meta">${sb}<span>${(r.attempts || []).length} attempt${(r.attempts || []).length === 1 ? '' : 's'}</span>
       <span class="elapsed" data-start="${esc(r.started_at)}" data-end="${esc(r.finished_at || '')}">${elapsed(r)}</span></div>

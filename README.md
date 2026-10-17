@@ -4,13 +4,17 @@ An API provider publishes a machine-readable change feed. A coding agent reads i
 
 Built solo at c0mpiled-14 (UC Berkeley, 2026-10-17) for the YC Fall 2026 RFS "Self-Maintaining APIs", agent-first software track.
 
+## Who it is for
+
+Businesses, not app users. The buyers are API providers (fewer support tickets, faster adoption of new features) and the integration or platform teams that maintain many third-party API integrations. The "customer" who reviews a PR is a developer on such a team, not an end user of the product built on the API.
+
 ## What it does
 
 1. **Detect.** `oasdiff` compares the provider's old and new OpenAPI spec and produces `changes.json` (breaking, deprecated, added), each change with a `migration_hint` written for agents.
 2. **Publish.** The list is served as a feed at `GET :8803/feed/<provider>.json`. Any agent can read it. `src/feed/AGENTS.snippet.md` is the copy-paste block a customer adds to their `AGENTS.md`.
 3. **Patch.** For each customer repo, a model (DeepSeek V4.1 Flash through RunAnywhere Wally) turns the changes plus the matching code into a unified diff. A failed attempt feeds its test log into the next attempt.
 4. **Verify.** One Freestyle VM per repo: upload, install, snapshot, apply the patch, run the tests. A retry forks a new VM from the snapshot. With `--contract` the tests call a mock API (`provider/mock-api.mjs`) that is generated from the provider's published OpenAPI spec, so the patch is checked against the spec itself: unknown endpoints 404, bad or unknown request fields 400, enum values from the spec.
-5. **Ship.** `gh pr create` opens a PR with the change table, the diff summary and the test result.
+5. **Ship.** `gh pr create` opens a PR with the change table, the diff summary and the test result. By default a developer team reviews and merges it. With `--merge auto` Patchbay merges the PR itself, but only if the tests passed in the VM and the diff is at most `--max-lines` (default 200) changed lines; otherwise the PR stays open. `--base autodemo` points PRs at a throwaway branch so `main` stays untouched in demos.
 6. **Dashboard.** `localhost:8801` shows each repo's progress, attempts, VM id and PR link.
 
 The demo provider is a fake one, **Acme Pay**, with three small customer repos (Node, Python, Go). v2 renames a request parameter, removes an endpoint and adds an enum value. A fourth repo (`node-storefront`) is the target for the outside-agent moment: `scripts/outside-agent/run.sh` points Claude Code at the feed alone and has it fix a repo it has never seen.

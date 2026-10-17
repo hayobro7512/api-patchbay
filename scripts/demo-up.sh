@@ -6,7 +6,8 @@ export PATH="$PATH:/opt/homebrew/bin"
 mkdir -p runs/logs
 pids=""
 start() { name=$1; shift; "$@" > "runs/logs/$name.log" 2>&1 & pids="$pids $!"; }
-trap 'kill $pids 2>/dev/null; echo; echo stopped' INT TERM EXIT
+trap 'kill $pids 2>/dev/null; echo; echo stopped; exit 0' INT TERM
+trap 'kill $pids 2>/dev/null' EXIT
 
 start provider node provider/server.js
 sleep 1

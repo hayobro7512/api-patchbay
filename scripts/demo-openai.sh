@@ -6,7 +6,8 @@ cd "$(dirname "$0")/.." || exit 1
 export PATH="$PATH:/opt/homebrew/bin"
 mkdir -p runs/logs
 pids=""
-trap 'kill $pids 2>/dev/null; echo; echo stopped' INT TERM EXIT
+trap 'kill $pids 2>/dev/null; echo; echo stopped; exit 0' INT TERM
+trap 'kill $pids 2>/dev/null' EXIT
 node dashboard/server.js > runs/logs/dashboard.log 2>&1 & pids="$pids $!"
 node src/feed/server.mjs > runs/logs/feed.log 2>&1 & pids="$pids $!"
 sleep 1

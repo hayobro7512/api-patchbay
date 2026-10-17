@@ -16,7 +16,7 @@ Acme Pay v2 renames a request field (`amount_cents` to `amount_minor`), removes 
 
 - [ ] `npm run reset` (provider back to v1, old PRs closed, runs cleared).
 - [ ] `freestyle vm list` and `freestyle snapshot list` are empty.
-- [ ] Terminal 1: `npm run demo`. Wait for the provider, dashboard and feed URLs.
+- [ ] Terminal 1: `npm run demo:simulated`. Wait for the provider, dashboard and feed URLs.
 - [ ] Terminal 2 (visible, command typed, not yet run): `npm run flip`.
 - [ ] Browser tab 1: `patchbay-simulated.pptx` in presentation mode. Tab 2: `http://localhost:8801` (shows "No runs yet" until the flip). Tab 3: empty, for the PR page.
 - [ ] Browser zoom 110%, notifications off, screen recorder armed. Do one full rehearsal, then `npm run reset` again.
@@ -32,7 +32,7 @@ Acme Pay v2 renames a request field (`amount_cents` to `amount_minor`), removes 
 | 0:58–1:12 | PR tab | "Each developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes." | Click "Open pull request" on any card (do not click Merge). Scroll to the change table, then to the "Verified in a clean Freestyle VM" line. |
 | 1:12–1:30 | Slide 3, then slide 4 | The one sentence above, then: "The provider ships once. Every developer team gets a tested PR." | Show slide 3 for the sentence, then slide 4. Stop recording. |
 
-Optional 8-second clip, only if under 90 seconds: an outside agent (Claude Code) fixing a repo it has never seen from the feed alone (`sh scripts/outside-agent/run.sh`, sped up). Say: "Any coding agent can use the same feed."
+Optional 8-second clip, only if under 90 seconds: an outside agent (Claude Code) fixing a repo it has never seen from the feed alone (`PROVIDER=acme-pay sh scripts/outside-agent/run.sh`, sped up). Say: "Any coding agent can use the same feed."
 
 ## Full narration (about 190 words)
 

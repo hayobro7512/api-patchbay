@@ -1,9 +1,10 @@
 #!/bin/sh
 # Outside agent proof: a coding agent that sees only AGENTS.md + the change feed fixes a customer repo.
 R=$(cd "$(dirname "$0")/../.." && pwd); PORT=${FEED_PORT:-8803}; BASE=http://localhost:$PORT
-# PROVIDER=openai REPO_SRC=$R/demo-repos/openai-images-py runs it on the real OpenAI change (default: simulated Acme Pay)
-PROVIDER=${PROVIDER:-acme-pay}; if [ "$PROVIDER" = openai ]; then NAME=OpenAI; OLD=$R/provider-real/openai-images-old.yaml; NEW=$R/provider-real/openai-images-new.yaml; else NAME="Acme Pay"; OLD=$R/provider/spec-v1.yaml; NEW=$R/provider/spec-v2.yaml; fi
-SRC=${REPO_SRC:-$R/demo-repos/node-storefront}; LIMIT=${AGENT_TIMEOUT:-240}
+# Default: the REAL OpenAI change on demo-repos/openai-images-py. PROVIDER=acme-pay runs the simulated provider on node-storefront.
+PROVIDER=${PROVIDER:-openai}; if [ "$PROVIDER" = openai ]; then NAME=OpenAI; OLD=$R/provider-real/openai-images-old.yaml; NEW=$R/provider-real/openai-images-new.yaml; else NAME="Acme Pay"; OLD=$R/provider/spec-v1.yaml; NEW=$R/provider/spec-v2.yaml; fi
+if [ "$PROVIDER" = openai ]; then DEF=$R/demo-repos/openai-images-py; else DEF=$R/demo-repos/node-storefront; fi
+SRC=${REPO_SRC:-$DEF}; LIMIT=${AGENT_TIMEOUT:-240}
 mkdir -p "$R/runs/feed" "$R/runs/outside-agent"
 [ -s "$R/runs/feed/$PROVIDER.json" ] || node "$R/src/detect/detect.mjs" --old "$OLD" --new "$NEW" --provider "$PROVIDER" --spec-url http://localhost:8800/spec.yaml --out "$R/runs/feed/$PROVIDER.json" || exit 1
 SP=""

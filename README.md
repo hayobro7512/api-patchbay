@@ -25,7 +25,7 @@ Prerequisites: Node 22+, `oasdiff`, Go, `gh` (logged in), the Freestyle CLI logi
 
 ```
 npm run demo:openai # real OpenAI change: dashboard + feed, press Enter to run
-npm run demo        # simulated Acme Pay: provider :8800, dashboard :8801, feed :8803, spec watcher
+npm run demo:simulated # simulated Acme Pay: provider :8800, dashboard :8801, feed :8803, spec watcher
 npm run flip        # provider publishes v2 -> watcher runs the pipeline
 npm run reset       # back to v1, close demo PRs, clear runs
 ```

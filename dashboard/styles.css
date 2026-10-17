@@ -90,7 +90,7 @@ main{max-width:1500px;margin:0 auto;padding:10px 20px 40px}
 .result.ok{color:var(--green);border:1px solid var(--green)} .result.err{color:var(--red);border:1px solid var(--red)}
 a:focus-visible,summary:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid #fff;outline-offset:2px}
 /* below the fold */
-.below{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;margin-top:12px;align-items:start}
+.below{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px;align-items:stretch}
 .feed{background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .feed summary{cursor:pointer;padding:9px 14px;font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .feed ol{list-style:none;margin:0;padding:0 14px 8px}

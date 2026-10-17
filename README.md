@@ -58,4 +58,4 @@ schemas/         the three contracts between the pieces
 ## Honest limits
 
 - Fake provider and small repos. Real migrations are harder, and patch quality depends on the model. In testing, DeepSeek V4.1 Flash passed 8 of 9 first-shot runs; the retry loop covers the rest.
-- Customers still review and merge every PR.
+- Developer teams still review and merge every PR (unless they opt in to auto-merge).

@@ -1,6 +1,8 @@
 # API Patchbay
 
-An API provider publishes a machine-readable change feed. A coding agent reads it, fixes each customer's code, proves the fix in a sandbox VM, and opens a pull request. The provider ships once, and every customer receives a tested PR.
+An API provider's spec change becomes one machine-readable change feed. Any coding agent can read it, fix each developer team's repo, prove the fix in a sandbox VM, and open a pull request. The provider ships once, and every developer team receives a tested PR.
+
+Note: the example repos the pipeline patches (`patchbay-demo-*`) are private GitHub repos, so their PR links will not open for visitors; the video shows them.
 
 Built solo at c0mpiled-14 (UC Berkeley, 2026-10-17) for the YC Fall 2026 RFS "Self-Maintaining APIs", agent-first software track.
 

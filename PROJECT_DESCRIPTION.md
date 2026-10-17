@@ -38,7 +38,19 @@ Plain-language gloss for the audience: a pull request (PR) is a proposal to chan
 6. **Ship.** A PR opens on GitHub with the changelog link, the diff, and the test result ("verified in a clean VM").
 7. **Dashboard.** A live page shows every repo's progress, attempts, VM id and PR link.
 
-## Demo (target, about 3 minutes)
+## Real change (this is the main demo; it works)
+
+The judges see a 90-second video, so the real case leads. In OpenAI's public spec (`openai/openai-openapi`, commits `5162af98` of 2026-05-13 to `f601a440` of 2026-10-15), `POST /images/generations` made `model` required and deprecated `user` in favor of `safety_identifier`. Patchbay diffs the two spec versions, publishes the feed, an agent patches a small example repo (ours, `openai-images`), the patch is tested in a clean Freestyle VM against a mock built from the spec, and a PR opens. The run takes about 30 seconds and passed first try in most runs, with a retry in some. Be honest on screen: the spec is trimmed to that one operation, and the repo is our own example, not OpenAI customer code. Detect also ran on the full real Stripe spec (v2300 to v2585): 18 request-side breaking changes and 25 new endpoints found in about 16 seconds, detect only.
+
+Who uses it: the API provider publishes the change; a developer team at a company that integrates the API reviews and merges the PR, or lets auto-merge handle small passing changes (`--merge auto`). Not end users of any app.
+
+The one-sentence difference: "Unlike dependency bots that start from your repo and bump versions, Patchbay starts from the provider's API change and hands every developer team a pull request that is already fixed and tested in a clean VM."
+
+## Simulated demo (secondary)
+
+What follows is the earlier simulated demo with the fake provider Acme Pay and three repos. It is not the lead story; use it only as a second example.
+
+## Demo (simulated Acme Pay, about 3 minutes)
 
 The demo uses a **fake provider, "Acme Pay"**, and three small customer repos (Node, Python, Go). It is not a real Stripe migration; say so if asked. The changes in Acme Pay v2: a request parameter is renamed (`amount_cents` to `amount_minor`), an endpoint is removed (`DELETE /v1/legacy/tokens/{token}`, replaced by `DELETE /v1/tokens/{token}`), and the charge status gains a new value (`requires_review`).
 

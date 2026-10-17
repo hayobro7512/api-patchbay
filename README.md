@@ -17,14 +17,15 @@ Businesses, not app users. The buyers are API providers (fewer support tickets, 
 5. **Ship.** `gh pr create` opens a PR with the change table, the diff summary and the test result. By default a developer team reviews and merges it. With `--merge auto` Patchbay merges the PR itself, but only if the tests passed in the VM and the diff is at most `--max-lines` (default 200) changed lines; otherwise the PR stays open. `--base autodemo` points PRs at a throwaway branch so `main` stays untouched in demos.
 6. **Dashboard.** `localhost:8801` shows each repo's progress, attempts, VM id and PR link.
 
-The demo provider is a fake one, **Acme Pay**, with three small customer repos (Node, Python, Go). v2 renames a request parameter, removes an endpoint and adds an enum value. A fourth repo (`node-storefront`) is the target for the outside-agent moment: `scripts/outside-agent/run.sh` points Claude Code at the feed alone and has it fix a repo it has never seen.
+**Real change (main demo):** OpenAI's public spec changed `POST /images/generations` between two commits (`5162af98`, 2026-05-13, and `f601a440`, 2026-10-15): `model` became required and `user` was deprecated for `safety_identifier`. `npm run demo:openai` runs the full pipeline on that change against a small example repo (`openai-images`, ours) in about 30 seconds. The spec is trimmed to that one operation. **Simulated provider (second demo):** a fake one, **Acme Pay**, with three small repos (Node, Python, Go). v2 renames a request parameter, removes an endpoint and adds an enum value. A fourth repo (`node-storefront`) is the target for the outside-agent moment: `scripts/outside-agent/run.sh` points Claude Code at the feed alone and has it fix a repo it has never seen.
 
 ## Run it
 
 Prerequisites: Node 22+, `oasdiff`, Go, `gh` (logged in), the Freestyle CLI login and `FREESTYLE_API_KEY` in `.env`, and `wally account login` for the patch model.
 
 ```
-npm run demo        # provider :8800, dashboard :8801, feed :8803, spec watcher
+npm run demo:openai # real OpenAI change: dashboard + feed, press Enter to run
+npm run demo        # simulated Acme Pay: provider :8800, dashboard :8801, feed :8803, spec watcher
 npm run flip        # provider publishes v2 -> watcher runs the pipeline
 npm run reset       # back to v1, close demo PRs, clear runs
 ```

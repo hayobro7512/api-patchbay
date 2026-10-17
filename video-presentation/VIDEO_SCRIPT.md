@@ -30,7 +30,7 @@ OpenAI's public spec (openai/openai-openapi, commits 5162af98 of 2026-05-13 to f
 |---|---|---|---|
 | 0:00–0:04 | Slide 1 | "This is API Patchbay." | Start recording. Advance after 3 seconds. |
 | 0:04–0:18 | Slide 2 (problem) | "A founder who worked at AWS says over 30% of their downtime came from API changes nobody noticed. Nobody reads changelogs, and fixing it meant every developer team editing their own code." | Advance to the dashboard on the last word. |
-| 0:18–0:30 | Dashboard, top banner (green "REAL SPEC CHANGE", the chips 1 breaking and 1 deprecated) and the change feed | "Here is a real change. OpenAI's API now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read." | In Terminal press Enter. The banner and the 2 changes appear within a few seconds. |
+| 0:18–0:30 | Dashboard, top banner (green "REAL SPEC CHANGE", the chips 1 breaking and 1 deprecated) and the change feed | "Here is a real change. OpenAI's published API spec now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read." | In Terminal press Enter. The banner and the 2 changes appear within a few seconds. |
 | 0:30–0:58 | Dashboard, three repo cards side by side (pipeline LOCATE, PATCH, VM TEST, PR; "Tested in a clean Freestyle VM" badge on each) | "An agent finds the code in each of three example repos, writes the fix, and tests it in a clean Freestyle VM, all in parallel. If a test fails, it retries from a snapshot." | Watch the pipeline turn green. The real run takes 35 to 80 seconds (47 s in my last test). Do not click. Record the whole run, then speed this clip up so it fits 28 seconds (usually 2x) and add a small "2x" caption. |
 | 0:58–1:12 | PR tab | "The developer team gets a pull request with the diff and the test result. They merge it, or turn on auto-merge for small, passing changes." | Click "Open pull request" on the dashboard card (the Merge button is for developer teams; do not click it). Scroll once to the change table, then to the "Verified in a clean Freestyle VM" line. |
 | 1:12–1:30 | Slide 3, then slide 4 | The one sentence above, then: "The provider ships once. Every developer team gets a tested PR." | The dashboard banner also shows the same sentence in small text; use slide 3 for the spoken moment, then slide 4 for the last line. Stop recording. |
@@ -43,7 +43,7 @@ Optional 8-second clip, only if the cut is under 90 seconds: an outside agent (C
 >
 > A founder who worked at AWS says over 30% of their downtime came from API changes nobody noticed. Nobody reads changelogs, and fixing it meant every developer team editing their own code.
 >
-> Here is a real change. OpenAI's API now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read.
+> Here is a real change. OpenAI's published API spec now requires a model on image generation and deprecates the user field. Patchbay turns that spec change into a feed any agent can read.
 >
 > An agent finds the code in each of three example repos, writes the fix, and tests it in a clean Freestyle VM, all in parallel. If a test fails, it retries from a snapshot.
 >

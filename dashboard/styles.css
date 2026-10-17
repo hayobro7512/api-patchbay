@@ -8,8 +8,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 var(--sans);fo
   background-image:radial-gradient(circle at 1px 1px,#1b222a 1px,transparent 0);background-size:22px 22px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .top{display:flex;justify-content:space-between;align-items:center;padding:7px 20px;border-bottom:1px solid var(--line);background:#0a0c0fe6}
-.brand{font:700 13px var(--mono);letter-spacing:.2em;display:flex;align-items:center;gap:10px}
-.brand-mark{width:16px;height:16px;border-radius:50%;border:3px solid var(--amber);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 5px var(--amber)}
+.brand{font:700 18px var(--mono);letter-spacing:.2em;display:flex;align-items:center;gap:12px}
+.brand-mark{width:22px;height:22px;border-radius:50%;border:3px solid var(--amber);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 5px var(--amber)}
 .live{font:600 11px var(--mono);color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 .live::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--dim);margin-right:7px}
 .live.on{color:var(--green)} .live.on::before{background:var(--green);animation:pulse 1.5s infinite}
@@ -90,7 +90,7 @@ main{max-width:1500px;margin:0 auto;padding:10px 20px 40px}
 .result.ok{color:var(--green);border:1px solid var(--green)} .result.err{color:var(--red);border:1px solid var(--red)}
 a:focus-visible,summary:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid #fff;outline-offset:2px}
 /* below the fold */
-.below{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px;align-items:stretch}
+.below{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px;align-items:start}
 .feed{background:var(--panel);border:1px solid var(--line);border-radius:8px}
 .feed summary{cursor:pointer;padding:9px 14px;font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .feed ol{list-style:none;margin:0;padding:0 14px 8px}

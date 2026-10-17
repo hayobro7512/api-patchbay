@@ -18,7 +18,7 @@ printf "Open the dashboard, start your screen recording, then press Enter to sta
 read _
 SU=https://raw.githubusercontent.com/openai/openai-openapi/f601a440c21397028cad2218eca1afd701bf12ec/openapi.yaml
 if [ $# -eq 0 ]; then set -- --sandbox freestyle --patch live --contract --ship --base autodemo; fi
-node src/run.mjs --repos openai-images --old provider-real/openai-images-old.yaml --new provider-real/openai-images-new.yaml --provider openai --spec-url "$SU" "$@"
+node src/run.mjs --repos openai-images,openai-images-py,openai-images-go --old provider-real/openai-images-old.yaml --new provider-real/openai-images-new.yaml --provider openai --spec-url "$SU" "$@"
 echo
 echo "Run finished. Dashboard stays up; press Ctrl+C to stop, then run: npm run reset"
 while true; do sleep 3600; done

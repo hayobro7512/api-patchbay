@@ -1,0 +1,12 @@
+diff --git a/images.py b/images.py
+index ccbec95..3adbe22 100644
+--- a/images.py
++++ b/images.py
+@@ -16,6 +16,6 @@ def _call(method, path, body):
+ 
+ def generate_image(prompt, size, user=None):
+     """Return the base64 image for a prompt. `user` identifies the end user for abuse monitoring."""
+-    body = {"prompt": prompt, "size": size, "user": user}
++    body = {"model": "gpt-image-1", "prompt": prompt, "size": size, "safety_identifier": user}
+     r = _call("POST", "/images/generations", {k: v for k, v in body.items() if v is not None})
+     return r["data"][0]["b64_json"]

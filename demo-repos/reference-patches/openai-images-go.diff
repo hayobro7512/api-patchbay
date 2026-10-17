@@ -1,0 +1,13 @@
+diff --git a/images.go b/images.go
+index ed28a49..dfbe637 100644
+--- a/images.go
++++ b/images.go
+@@ -17,7 +17,7 @@ func base() string {
+ 
+ // GenerateImage returns the base64 image for a prompt. user identifies the end user for abuse monitoring.
+ func GenerateImage(prompt, size, user string) (string, error) {
+-	body, _ := json.Marshal(map[string]any{"prompt": prompt, "size": size, "user": user})
++	body, _ := json.Marshal(map[string]any{"model": "gpt-image-1", "prompt": prompt, "size": size, "safety_identifier": user})
+ 	res, err := http.Post(base()+"/images/generations", "application/json", bytes.NewReader(body))
+ 	if err != nil {
+ 		return "", err

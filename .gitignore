@@ -5,6 +5,8 @@ demo-repos/go/
 demo-repos/node-storefront/
 demo-repos/node/
 demo-repos/openai-images/
+demo-repos/openai-images-go/
+demo-repos/openai-images-py/
 demo-repos/python/
 dist/
 docs/real-openai/oasdiff-*.json
